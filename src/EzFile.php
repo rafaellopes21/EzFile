@@ -470,7 +470,7 @@ class EzFile{
         $fileName = preg_replace('/[đ]/ui', 'd', $fileName);
         $fileName = preg_replace('/[š]/ui', 's', $fileName);
         $fileName = preg_replace('/[ž]/ui', 'z', $fileName);
-        $fileName =  preg_replace('/[^a-zA-Z0-9\s]/', '_', $fileName);
+        $fileName = preg_replace('/[^a-zA-Z0-9\s]/', '_', $fileName);
         $fileName = str_replace("___divider_replacer___", "/", $fileName);
         return $fileName;
     }
