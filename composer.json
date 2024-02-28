@@ -1,0 +1,28 @@
+{
+  "name": "amplie-solucoes/ezfile",
+  "description": "Easy and Simple Filemanager",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Amplie Soluções",
+      "email": "contato@ampliesolucoes.com.br"
+    }
+  ],
+  "require": {
+    "php": "^7.0 || ^8.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.0 || ^7.0 || ^8.0 || ^9.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "AmplieSolucoes\\EzFile\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AmplieSolucoes\\EzFile\\": "tests/"
+    }
+  }
+}
