@@ -246,7 +246,7 @@ EzFile::sizeUnitFormatter(100); //Return (string): 100 B
 
 //Formatting by setting computational unit
 EzFile::sizeUnitFormatter(5, EzFile::UNIT_GIGABYTES);   //Return (string): 5 GB
-EzFile::sizeUnitFormatter(500, EzFile::UNIT_GIGABYTES); //Return (string): 5 GB
+EzFile::sizeUnitFormatter(500, EzFile::UNIT_GIGABYTES); //Return (string): 500 GB
 EzFile::sizeUnitFormatter(1, EzFile::UNIT_TERABYTES);   //Return (string): 1 TB
 
 //Formatting by setting computational unit with data in byte number
