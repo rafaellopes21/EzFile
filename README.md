@@ -25,7 +25,7 @@ If you need to work with handling files that will be large in size, make sure to
 
 The objective of EzFile is to be a simple and easily accessible library, therefore, all the code was designed to be executed statically, facilitating the work and manipulation of the code.
 
-It is also important to know that all the functions below have a parameter called "force" which is intended to force the manipulation of files that are outside the defined main path, see the examples:
+Additionally, it's crucial to note that each of the functions listed below includes a parameter named "force." This parameter serves the purpose of enabling the manipulation of files located beyond the designated main path. Please refer to the examples provided for clarity:
 
 ----
 ##### Exists Function
@@ -189,6 +189,14 @@ ERROR: ['error' => true, 'message' => 'error_message']
 ----
 ##### Upload Function
 ```php
+//Example Data
+$your_files_in_array = [
+    [/*File/Dir 1*/],
+    [/*File/Dir 2*/],
+    //...
+    //...
+    //...
+]
 //Upload a Directory (and all contents inside) or File(s)
 EzFile::upload('upload_path', $your_files_in_array);
 

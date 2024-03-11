@@ -17,6 +17,14 @@ class EzFile{
     | Callable Functions
     |--------------------------------------------------------------------------
     */
+    /**
+     * Check if a file or directory exists.
+     *
+     * @param string $path The path of the file or directory to check.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the file or directory exists. If the path is not valid and $force is false, returns false.
+     * If $force is true and the path is not valid, returns an array with the 'error' key containing an error message.
+     */
     public static function exists($path, $force = false){
         $pathInfo = self::validatePathInfo($path, $force);
         if(isset($pathInfo['error'])) return $pathInfo;
@@ -24,6 +32,15 @@ class EzFile{
         return !isset($pathInfo['extension']) ? is_dir($path) : is_file($path);
     }
 
+    /**
+     * List all files and directories within a directory.
+     *
+     * @param string $path The path of the directory to list.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return array|mixed Returns an array containing the paths of all files and directories within the specified directory.
+     * If the specified path is not valid and $force is false, returns an array with an error message.
+     * If the specified path is a file, returns an array with an error message.
+     */
     public static function list($path, $force = false){
         $pathInfo = self::validatePathInfo($path, $force);
         if(isset($pathInfo['error'])) return $pathInfo;
@@ -46,6 +63,18 @@ class EzFile{
         return $allFiles;
     }
 
+    /**
+     * Create a file or directory.
+     *
+     * @param string $path The path of the file or directory to create.
+     * @param bool $replaceSpecialCharacters (optional) Indicates whether to replace special characters in the path. Default is false.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the file or directory was created successfully.
+     * If the path is not valid and $force is false, returns an array with an error message.
+     * If $replaceSpecialCharacters is true, special characters in the path will be replaced.
+     * If the path points to a directory, it is created. If it points to a file, the file is created and its permissions are set to 0777.
+     * Returns an array with an error message if the file could not be created.
+     */
     public static function create($path, $replaceSpecialCharacters = false, $force = false){
         $pathInfo = self::validatePathInfo($path, $force);
         if(isset($pathInfo['error'])) return $pathInfo;
@@ -68,6 +97,17 @@ class EzFile{
         return true;
     }
 
+    /**
+     * Delete a file or directory.
+     *
+     * @param string $path The path of the file or directory to delete.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the file or directory was deleted successfully.
+     * If the path is not valid and $force is false, returns an array with an error message.
+     * If the specified path points to a directory, it is deleted recursively.
+     * If the specified path points to a file, it is deleted.
+     * Returns an array with an error message if the file or directory could not be deleted or if it does not exist.
+     */
     public static function delete($path, $force = false){
         $pathInfo = self::validatePathInfo($path, $force);
         if(isset($pathInfo['error'])) return $pathInfo;
@@ -83,6 +123,20 @@ class EzFile{
         }
     }
 
+    /**
+     * Rename a file or directory.
+     *
+     * @param string $currentPathName The current path or name of the file or directory to be renamed.
+     * @param string $newName The new name for the file or directory.
+     * @param bool $replaceSpecialCharacters (optional) Indicates whether to replace special characters in the new name. Default is false.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the file or directory was renamed successfully.
+     * If the current path is not valid and $force is false, returns an array with an error message.
+     * If $replaceSpecialCharacters is true, special characters in the new name will be replaced.
+     * If the current path points to a directory, it is renamed to the new name.
+     * If the current path points to a file, it is renamed to the new name.
+     * Returns an array with an error message if the file or directory could not be renamed or if it does not exist.
+     */
     public static function rename($currentPathName, $newName, $replaceSpecialCharacters = false, $force = false) {
         $pathInfo = self::validatePathInfo($currentPathName, $force);
         if(isset($pathInfo['error'])) return $pathInfo;
@@ -107,6 +161,18 @@ class EzFile{
         }
     }
 
+    /**
+     * Copy a file or directory to a new location.
+     *
+     * @param string $copyFrom The path of the file or directory to be copied.
+     * @param string $copyTo The path of the new location where the file or directory will be copied to.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the file or directory was copied successfully.
+     * If the source path or destination path is not valid and $force is false, returns an array with an error message.
+     * If the source path points to a directory, it is recursively copied to the destination path.
+     * If the source path points to a file, it is copied to the destination path.
+     * Returns an array with an error message if the file or directory could not be copied or if it does not exist.
+     */
     public static function copy($copyFrom, $copyTo, $force = false) {
         $pathInfo = self::validatePathInfo($copyFrom, $force);
         if(isset($pathInfo['error'])) return $pathInfo;
@@ -130,6 +196,18 @@ class EzFile{
         }
     }
 
+    /**
+     * Move a file or directory to a new location.
+     *
+     * @param string $moveFrom The path of the file or directory to be moved.
+     * @param string $moveTo The path of the new location where the file or directory will be moved to.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the file or directory was moved successfully.
+     * If the source path or destination path is not valid and $force is false, returns an array with an error message.
+     * If the source path points to a directory, it is recursively moved to the destination path.
+     * If the source path points to a file, it is moved to the destination path.
+     * Returns an array with an error message if the file or directory could not be moved or if it does not exist.
+     */
     public static function move($moveFrom, $moveTo, $force = false){
         $pathInfo = self::validatePathInfo($moveFrom, $force);
         if(isset($pathInfo['error'])) return $pathInfo;
@@ -153,6 +231,16 @@ class EzFile{
         }
     }
 
+    /**
+     * Upload one or multiple files to a specified location.
+     *
+     * @param string $uploadPath The path where the files will be uploaded.
+     * @param array $files An array containing the file information. Each file should be represented by an array with keys: 'name', 'full_path', 'type', 'tmp_name', and 'error'.
+     * @param bool|string $renameTo (optional) Indicates whether to rename uploaded files. If set to a string, files will be renamed with the specified prefix. Default is false.
+     * @param array $acceptOnly (optional) An array containing the allowed file extensions. If specified, only files with these extensions will be uploaded. Default is an empty array.
+     * @param bool $force (optional) Indicates whether to force path validation and creation if the upload path does not exist. Default is false.
+     * @return array An array containing information about the uploaded files. It has three keys: 'success' for successfully uploaded files, 'fail' for files that failed to upload, and 'denied' for files that were denied due to their extension.
+     */
     public static function upload($uploadPath, $files, $renameTo = false, $acceptOnly = [], $force = false){
         $pathInfo = self::validatePathInfo($uploadPath, $force);
         if(isset($pathInfo['error'])) return $pathInfo;
@@ -199,10 +287,18 @@ class EzFile{
                 }
             }
         }
-
         return $filesUploaded;
     }
 
+    /**
+     * Download a file from the server.
+     *
+     * @param string $path The path of the file to be downloaded.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return void This function outputs the file to the browser for download. It does not return any value.
+     * If the specified path is not valid and $force is false, an error message is echoed.
+     * If the specified path points to a directory, it is zipped before being downloaded.
+     */
     public static function download($path, $force = false) {
         $pathInfo = self::validatePathInfo($path, $force);
         if(isset($pathInfo['error'])) return $pathInfo;
@@ -240,6 +336,18 @@ class EzFile{
         exit;
     }
 
+    /**
+     * Create a zip archive from a directory.
+     *
+     * @param string $path The path of the directory to be zipped.
+     * @param string $pathToZip The path where the zip archive will be created.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the directory was successfully zipped.
+     * If the specified path is not valid and $force is false, returns an array with an error message.
+     * If the specified path points to a file, returns an array with an error message.
+     * If the zip archive is created successfully, it is saved at the specified location.
+     * Returns an array with an error message if the directory could not be zipped.
+     */
     public static function zip($path, $pathToZip, $force = false){
         $pathInfo = self::validatePathInfo($path, $force);
         if(isset($pathInfo['error'])) return $pathInfo;
@@ -264,6 +372,17 @@ class EzFile{
         }
     }
 
+    /**
+     * Change the permissions of a file or directory.
+     *
+     * @param string $path The path of the file or directory whose permissions will be changed.
+     * @param int $permissionsCode The new permissions code to be applied. Refer to PHP's chmod() function for possible values.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the permissions were successfully changed.
+     * If the specified path does not exist and $force is false, returns an array with an error message.
+     * If the permissions were successfully changed, returns true.
+     * Returns an array with an error message if the permissions could not be changed.
+     */
     public static function changePermissions($path, $permissionsCode, $force = false) {
         if (self::exists($path, $force)) {
             return chmod($path, $permissionsCode)
@@ -274,6 +393,24 @@ class EzFile{
         }
     }
 
+    /**
+     * Get information about a file or directory.
+     *
+     * @param string $path The path of the file or directory to get information about.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return array Returns an array containing information about the specified file or directory.
+     * If the specified path is not valid and $force is false, returns an array with an error message.
+     * If the specified file does not exist, returns an array with an error message.
+     * The returned array contains the following keys:
+     * - 'basename': The base name of the file or directory.
+     * - 'dirname': The directory name of the file or directory.
+     * - 'extension': The file extension (if applicable).
+     * - 'size_raw': The size of the file or directory in bytes.
+     * - 'size_unit': The unit of the file or directory size (e.g., KB, MB).
+     * - 'size_formated': The formatted size of the file or directory (e.g., '2.5 MB').
+     * - 'created_at': The creation date and time of the file or directory in 'Y-m-d H:i:s' format, or null if unavailable.
+     * - 'modified_at': The last modification date and time of the file or directory in 'Y-m-d H:i:s' format.
+     */
     public static function pathInfo($path, $force = false){
         $pathInfo = self::validatePathInfo($path, $force);
         if(isset($pathInfo['error'])) return $pathInfo;
@@ -291,6 +428,16 @@ class EzFile{
         return $pathInfo;
     }
 
+    /**
+     * Format the size of a file or directory into human-readable format.
+     *
+     * @param int $size The size of the file or directory.
+     * @param string $unitType (optional) The type of unit to be used for formatting. Default is bytes.
+     * @param bool $rawSize (optional) Indicates whether to return the raw size without formatting. Default is false.
+     * @return string Returns the size of the file or directory formatted into a human-readable format.
+     * If $rawSize is true, returns the raw size with the unit specified in $unitType.
+     * The formatted size includes a numerical value and a unit (e.g., '2.5 MB').
+     */
     public static function sizeUnitFormatter($size, $unitType = self::UNIT_BYTES, $rawSize = false){
         $unitIndex = 0;
         $size = self::byteCast($size, $unitType);
@@ -313,6 +460,16 @@ class EzFile{
     | Private Functions
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * Create a directory if it does not already exist.
+     *
+     * @param string $path The path of the directory to be created.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the directory was successfully created or already exists.
+     * If the specified path is not valid and $force is false, returns an array with an error message.
+     * If the directory could not be created, returns an array with an error message.
+     */
     private static function directoryCreate($path, $force = false){
         if (!self::exists($path, $force)) {
             if (!mkdir($path, 0777, true)) {
@@ -322,6 +479,16 @@ class EzFile{
         return true;
     }
 
+    /**
+     * Recursively copy a directory and its contents to a new location.
+     *
+     * @param string $copyFrom The path of the directory to be copied.
+     * @param string $copyTo The destination path where the directory will be copied.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the directory and its contents were successfully copied.
+     * If the specified source directory does not exist, returns an array with an error message.
+     * If any error occurs during the copy process, returns an array with an error message.
+     */
     private static function directoryCopy($copyFrom, $copyTo, $force = false){
         if (is_dir($copyFrom)) {
             $created = self::directoryCreate($copyFrom, $force);
@@ -351,6 +518,16 @@ class EzFile{
         }
     }
 
+    /**
+     * Recursively move a directory and its contents to a new location.
+     *
+     * @param string $moveFrom The path of the directory to be moved.
+     * @param string $moveTo The destination path where the directory will be moved.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the directory and its contents were successfully moved.
+     * If the specified source directory does not exist, returns an array with an error message.
+     * If any error occurs during the move process, returns an array with an error message.
+     */
     private static function directoryMove($moveFrom, $moveTo, $force = false) {
         $pathInfo = self::validatePathInfo($moveFrom, $force);
         if(isset($pathInfo['error'])) return $pathInfo;
@@ -397,6 +574,15 @@ class EzFile{
         }
     }
 
+    /**
+     * Recursively delete a directory and its contents.
+     *
+     * @param string $path The path of the directory to be deleted.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the directory and its contents were successfully deleted.
+     * If the specified directory does not exist, returns an array with an error message.
+     * If any error occurs during the deletion process, returns an array with an error message.
+     */
     private static function directoryDelete($path, $force = false){
         if (self::exists($path, $force)) {
             if (is_dir($path)) {
@@ -426,6 +612,13 @@ class EzFile{
         }
     }
 
+    /**
+     * Calculate the total size of a directory and its contents recursively.
+     *
+     * @param string $path The path of the directory for which to calculate the size.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return int The total size of the directory and its contents in bytes.
+     */
     private static function directorySize($path, $force = false){
         $size = 0;
         foreach(glob($path.'/*') as $file){
@@ -435,6 +628,13 @@ class EzFile{
         return $size;
     }
 
+    /**
+     * Convert the size from one unit to another unit.
+     *
+     * @param int $size The size to be converted.
+     * @param string $unitType The unit type to convert the size to. Supported units are: bytes, kilobytes, megabytes, gigabytes, terabytes, petabytes, exabytes, zettabytes, yottabytes.
+     * @return int The converted size in the specified unit.
+     */
     private static function byteCast($size, $unitType){
         $unitSize = 0;
         switch (strtoupper($unitType)){
@@ -452,11 +652,25 @@ class EzFile{
         return $unitSize * $size;
     }
 
+    /**
+     * Validate the path information and check for any security risks.
+     *
+     * @param string $path The path for which to validate the information.
+     * @param bool $force (optional) Indicates whether to force path validation, allowing manipulation of directory levels. Default is false.
+     * @return array|string Returns an array containing the path information if it's valid.
+     * If the path contains security risks (e.g., directory traversal), returns an error message.
+     */
     private static function validatePathInfo($path, $force = false){
         if((strpos($path, "..") !== false) && !$force) return self::returnErrors("Access denied to manipulate directories levels in '".$path."' without force parameter.");
         return pathinfo($path) ?? self::returnErrors("Invalid pathinfo for '".$path."'.");
     }
 
+    /**
+     * Sanitize a file name by replacing special characters and removing accents.
+     *
+     * @param string $fileName The file name to be sanitized.
+     * @return string The sanitized file name.
+     */
     private static function sanitizeFile($fileName) {
         $fileName = str_replace("/", "___divider_replacer___", strtolower($fileName));
         $fileName = preg_replace('/[áàãâä]/ui', 'a', $fileName);
@@ -475,6 +689,15 @@ class EzFile{
         return $fileName;
     }
 
+    /**
+     * Return an error message in a standardized format.
+     *
+     * @param string $message The error message to be returned.
+     * @return array Returns an array containing the error message.
+     *
+     * Note: This function is used internally to return error messages in a standardized format.
+     * It is called within almost all other functions mentioned above to handle error messages.
+     */
     private static function returnErrors($message){
         return ['error' => true, 'message' => $message];
     }
