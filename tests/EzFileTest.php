@@ -134,6 +134,26 @@ class EzFileTest extends TestCase
         $this->assertFileExists($zipPath);
     }
 
+    public function testWrite(){
+        $path = _ExampleTest::DIRECTORY_RENAME_TEST."/writing.txt";
+
+        $result = EzFile::write($path, 'writing...');
+        $this->assertTrue($result);
+        $result = EzFile::write($path, 'concatenate...', false);
+        $this->assertTrue($result);
+        $result = EzFile::write($path, 'replacing...');
+        $this->assertTrue($result);
+
+        $this->assertFileExists($path);
+        $this->assertEquals('replacing...', file_get_contents($path));
+    }
+
+    public function testRead(){
+        $path = _ExampleTest::DIRECTORY_RENAME_TEST."/writing.txt";
+        $result = EzFile::read($path);
+        $this->assertEquals('replacing...', $result);
+    }
+
     public function testDelete(){
         $result = EzFile::delete(__DIR__."/folder_test_copy.zip");
         $this->assertTrue($result);

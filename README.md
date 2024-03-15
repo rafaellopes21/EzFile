@@ -61,6 +61,39 @@ ERROR: ['error' => true, 'message' => 'error_message']
 */
 ```
 ----
+##### Write Function
+```php
+//Write a file replacing the content (the function will create the file if not exist)
+EzFile::write('your_file_path', 'any_content_you_want');
+
+//using 'replaceContent' as FALSE, to append the content at the end of file.
+EzFile::write('your_file_path', 'any_content_you_want', false);
+
+//Using 'force' paramn to write in a file outsite main path
+EzFile::write('your_file_path', 'any_content_you_want', false, true);
+
+/*
+====== [ Function Return ] ===== 
+SUCCESS: true
+ERROR: ['error' => true, 'message' => 'error_message']
+*/
+```
+----
+##### Read Function
+```php
+//Read the file that you want
+EzFile::read('your_file_path');
+
+//Using 'force' paramn to read a file outsite main path
+EzFile::read('your_file_path', true);
+
+/*
+====== [ Function Return ] ===== 
+SUCCESS: *The File Content*
+ERROR: ['error' => true, 'message' => 'error_message']
+*/
+```
+----
 ##### Rename Function
 ```php
 //Rename a Directory or File
@@ -270,6 +303,8 @@ ERROR: ['error' => true, 'message' => 'error_message']
 ## Example of Code
 See below a simple example of how to work with some functions
 ```php
+//Import the lib
+use AmplieSolucoes\EzFile\EzFile;
 
 //Example Creating a file/Directory
 $ezFile = EzFile::create('your_path');
@@ -301,6 +336,14 @@ if(isset($ezFile['error'])){
     // Ops, errors found... put your code logic here with message $ezFile['message']
 } else {
     // It Worked, get all data from the array $ezFile
+}
+
+//Example writing file(s)
+$ezFile = EzFile::write('file_path_name_with_extension', 'any_content');
+if(isset($ezFile['error'])){
+    // Ops, errors found... put your code logic here with message $ezFile['message']
+} else {
+    // It Worked
 }
 ```
 ----

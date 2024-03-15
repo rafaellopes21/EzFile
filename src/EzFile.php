@@ -2,6 +2,11 @@
 namespace AmplieSolucoes\EzFile;
 
 class EzFile{
+    /*
+    |--------------------------------------------------------------------------
+    | Const data Variables
+    |--------------------------------------------------------------------------
+    */
     const UNIT_BYTES = "B";
     const UNIT_KILOBYTES = "KB";
     const UNIT_MEGABYTES = "MB";
@@ -95,6 +100,54 @@ class EzFile{
             }
         }
         return true;
+    }
+
+    /**
+     * Write content to a file.
+     *
+     * @param string $path The path to the file where the content will be written.
+     * @param string $content The content to write to the file.
+     * @param bool $replaceContent (optional) Indicates whether to replace existing content. Default is true.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the content was written successfully.
+     * If the path is not valid and $force is false, returns an array with an error message.
+     * If the specified path points to a directory, returns an array with an error message.
+     * If the file could not be written, returns an array with an error message.
+     * If $replaceContent is false and the file already has content, a new line is inserted before writing.
+     */
+    public static function write($path, $content, $replaceContent = true, $force = false) {
+        $pathInfo = self::validatePathInfo($path, $force);
+        if(isset($pathInfo['error'])) return $pathInfo;
+        if(!isset($pathInfo['extension'])) return self::returnErrors("The path sent is not a file '".$path."'.");
+
+        self::directoryCreate($pathInfo['dirname'], $force);
+
+        if($file = fopen($path, ($replaceContent ? 'w' : 'a'))){
+            if(!$replaceContent && filesize($path) > 0) fwrite($file, PHP_EOL);
+            fwrite($file, $content);
+            fclose($file);
+            return true;
+        } else {
+            return self::returnErrors("Could not write to the file '".$path."'.");
+        }
+    }
+
+    /**
+     * Read the content of a file.
+     *
+     * @param string $path The path to the file to read.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return string|array Returns the content of the file if it exists.
+     * If the path is not valid and $force is false, returns an array with an error message.
+     * If the specified path points to a directory, returns an array with an error message.
+     * If the file could not be read or does not exist, returns an array with an error message.
+     */
+    public static function read($path, $force = false) {
+        $pathInfo = self::validatePathInfo($path, $force);
+        if(isset($pathInfo['error'])) return $pathInfo;
+        if(!isset($pathInfo['extension'])) return self::returnErrors("The path sent is not a file '".$path."'.");
+
+        return is_file($path) ? file_get_contents($path) : self::returnErrors("File '".$path."' does not exist.");
     }
 
     /**
