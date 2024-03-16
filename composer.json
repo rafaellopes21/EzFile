@@ -3,13 +3,42 @@
   "description": "Easy and Simple Filemanager",
   "type": "library",
   "license": "MIT",
+  "homepage":    "https://ampliesolucoes.com.br",
+  "keywords": [
+    "File manager",
+    "PHP file management",
+    "Directory manipulation",
+    "File handling",
+    "PHP library",
+    "Open source",
+    "Open source project",
+    "Composer",
+    "PHP development",
+    "Web development",
+    "File organization",
+    "Code management",
+    "Utility library",
+    "PHP utilities",
+    "Development tools",
+    "Filesystem operations",
+    "php file manager",
+    "file manager",
+    "media manger",
+    "upload",
+    "filemanager",
+    "file",
+    "directory",
+    "folder",
+    "manager",
+    "file upload"
+  ],
   "authors": [
     {
       "name": "Amplie Soluções",
       "email": "contato@ampliesolucoes.com.br"
     }
   ],
-  "version": "1.0.2",
+  "version": "1.0.3",
   "require": {
     "php": "^7.0 || ^8.0"
   },
