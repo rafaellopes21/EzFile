@@ -304,6 +304,15 @@ class EzFile{
         $counter = 0;
         foreach ($files as $archive) {
             if(isset($archive['name'])){
+                if(gettype($archive['name']) === "string"){
+                    $archive = [
+                        'name' => [$archive['name']],
+                        'full_path' => [$archive['full_path']],
+                        'type' => [$archive['type']],
+                        'tmp_name' => [$archive['tmp_name']],
+                        'error' => [$archive['error']],
+                    ];
+                }
                 foreach ($archive['name'] as $key => $val){
                     $file = [
                         'name' => $archive['name'][$key],

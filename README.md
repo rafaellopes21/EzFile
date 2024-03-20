@@ -238,26 +238,17 @@ ERROR: ['error' => true, 'message' => 'error_message']
 ----
 ##### Upload Function
 ```php
-//Example Data
-$your_files_in_array = [
-    [/*File/Dir 1*/],
-    [/*File/Dir 2*/],
-    //...
-    //...
-    //...
-];
-
 //Upload a Directory (and all contents inside) or File(s)
-EzFile::upload('upload_path', $your_files_in_array);
+EzFile::upload('upload_path', $_FILES);
 
 //Uploading and renaming (the lib will interate automatically as new_name_1... new_name_2....)
-EzFile::upload('upload_path', $your_files_in_array, 'new_name');
+EzFile::upload('upload_path', $_FILES, 'new_name');
 
 //Uploading accept only files with
-EzFile::upload('upload_path', $your_files_in_array, false, ['txt', 'png', 'json', /* ... */]);
+EzFile::upload('upload_path', $_FILES, false, ['txt', 'png', 'json', /* ... */]);
 
 //Using 'force' paramn to Upload outsite main path
-EzFile::upload('upload_path', $your_files_in_array, false, [], true);
+EzFile::upload('upload_path', $_FILES, false, [], true);
 
 /*
 ====== [ Function Return ] ===== 
