@@ -205,6 +205,22 @@ ERROR: ['error' => true, 'message' => 'error_message']
 */
 ```
 ----
+##### Unzip Folder Function
+```php
+//Unzip a file with all contents inside (ONLY ZIP FILES)
+EzFile::unzip('your_zip_file_path', 'unzip_path');
+
+//Using 'force' paramn to unzip outsite main path (ONLY ZIP FILES)
+EzFile::unzip('your_zip_file_path', 'unzip_path', true);
+
+/*
+====== [ Function Return ] ===== 
+SUCCESS: true
+ERROR: ['error' => true, 'message' => 'error_message']
+*/
+```
+
+----
 ##### Delete Function
 ```php
 //Delete a Directory (and all contents inside) or File
@@ -229,7 +245,8 @@ $your_files_in_array = [
     //...
     //...
     //...
-]
+];
+
 //Upload a Directory (and all contents inside) or File(s)
 EzFile::upload('upload_path', $your_files_in_array);
 

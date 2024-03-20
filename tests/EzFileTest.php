@@ -134,6 +134,12 @@ class EzFileTest extends TestCase
         $this->assertFileExists($zipPath);
     }
 
+    public function testUnzip(){
+        $extractDir = _ExampleTest::DIRECTORY_EXTRACTOR;
+        $unzip = EzFile::unzip(__DIR__."/folder_test_copy.zip", $extractDir);
+        $this->assertTrue($unzip);
+    }
+
     public function testWrite(){
         $path = _ExampleTest::DIRECTORY_RENAME_TEST."/writing.txt";
 
@@ -160,6 +166,8 @@ class EzFileTest extends TestCase
         $result = EzFile::delete(_ExampleTest::DIRECTORY_TEST_COPY);
         $this->assertTrue($result);
         $result = EzFile::delete(_ExampleTest::DIRECTORY_RENAME_TEST);
+        $this->assertTrue($result);
+        $result = EzFile::delete(_ExampleTest::DIRECTORY_EXTRACTOR);
         $this->assertTrue($result);
     }
 

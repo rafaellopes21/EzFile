@@ -12,4 +12,5 @@ class _ExampleTest{
     const FILE_RENAME_TEST = self::DIRECTORY_TEST.'/file_test_rename.txt';
 
     const DIRECTORY_TEST_COPY = __DIR__.'/folder_test_copy';
+    const DIRECTORY_EXTRACTOR = __DIR__.'/extracted';
 }

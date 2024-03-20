@@ -426,6 +426,44 @@ class EzFile{
     }
 
     /**
+     * Unzips a ZIP file to a specified directory.
+     *
+     * @param string $zipPath The path of the ZIP file to unzip.
+     * @param string $pathToExtract The directory where the ZIP file will be extracted.
+     * @param bool $force (optional) Indicates whether to force path validation. Default is false.
+     * @return bool|array Returns true if the ZIP file was successfully extracted.
+     * If the ZIP file path is not valid and $force is false, returns an array with an error message.
+     * If the ZIP file path is not a valid ZIP file, returns an array with an error message.
+     * If the destination path is not valid and $force is false, returns an array with an error message.
+     * If the destination path is a file, returns an array with an error message.
+     * If the destination directory does not exist and cannot be created, returns an array with an error message.
+     * Returns an array with an error message if the ZIP file could not be extracted.
+     */
+    public static function unzip($zipPath, $pathToExtract, $force = false) {
+        $pathInfo = self::validatePathInfo($zipPath, $force);
+        if (isset($pathInfo['error'])) return $pathInfo;
+        if (!isset($pathInfo['extension'])) return self::returnErrors("The zip file '$zipPath' is not a compact file and cannot be used as a extraction file.");
+        if (strtolower($pathInfo['extension']) != "zip") return self::returnErrors("The file '$zipPath' is not a ZIP file, and cannot be extracted.");
+
+        $pathInfoDest = self::validatePathInfo($pathToExtract, $force);
+        if (isset($pathInfoDest['error'])) return $pathInfoDest;
+        if (isset($pathInfoDest['extension'])) return self::returnErrors("The destination path '$pathToExtract' is a file and cannot be used as the extraction destination.");
+
+        if(!is_dir($pathInfoDest['dirname'])){ $dirExists = self::directoryCreate($pathInfoDest['dirname'], $force); }
+        if(isset($dirExists['error'])) return $dirExists;
+
+        $zip = new \ZipArchive();
+
+        if ($zip->open($zipPath) === TRUE) {
+            $zip->extractTo($pathToExtract);
+            $zip->close();
+            return true;
+        } else {
+            return self::returnErrors("Failed to unzip the file '$zipPath'.");
+        }
+    }
+
+    /**
      * Change the permissions of a file or directory.
      *
      * @param string $path The path of the file or directory whose permissions will be changed.
@@ -725,7 +763,15 @@ class EzFile{
      * @return string The sanitized file name.
      */
     private static function sanitizeFile($fileName) {
-        $fileName = str_replace("/", "___divider_replacer___", strtolower($fileName));
+        $dirname = "";
+        $fileName = str_replace("/", "\\", strtolower($fileName));
+        if(strpos($fileName, "..") !== false){
+            $dirname = str_replace("/", "\\", dirname($fileName)."/");
+            $exploded = explode($dirname, $fileName);
+            $fileName = isset($exploded[1]) ? $exploded[1] : $fileName;
+        }
+
+        $fileName = str_replace("\\", "___divider_replacer___", $fileName);
         $fileName = preg_replace('/[áàãâä]/ui', 'a', $fileName);
         $fileName = preg_replace('/[éèêë]/ui', 'e', $fileName);
         $fileName = preg_replace('/[íìîï]/ui', 'i', $fileName);
@@ -738,8 +784,9 @@ class EzFile{
         $fileName = preg_replace('/[š]/ui', 's', $fileName);
         $fileName = preg_replace('/[ž]/ui', 'z', $fileName);
         $fileName = preg_replace('/[^a-zA-Z0-9\s]/', '_', $fileName);
-        $fileName = str_replace("___divider_replacer___", "/", $fileName);
-        return $fileName;
+        $fileName = str_replace("___divider_replacer___", "\\", $fileName);
+
+        return $dirname.$fileName;
     }
 
     /**
