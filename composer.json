@@ -40,7 +40,7 @@
       "email": "contato@ampliesolucoes.com.br"
     }
   ],
-  "version": "2.1",
+  "version": "2.2",
   "require": {
     "php": "^7.0 || ^8.0"
   },
