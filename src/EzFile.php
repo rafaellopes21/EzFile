@@ -375,7 +375,7 @@ class EzFile{
                 $zipTo = ((strpos($path, "/") !== false) && explode("/", $path) > 1) ? $path."/../" : $path;
                 self::zip($path, $zipTo, true);
 
-                $path = $zipTo.$downloadName;
+                $path = $zipTo."\\".$downloadName;
                 $deleteAfterDownload = true;
             }
 
