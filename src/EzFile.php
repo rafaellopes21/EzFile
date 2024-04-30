@@ -234,6 +234,7 @@ class EzFile{
         if(isset($newPathInfo['error'])) return $newPathInfo;
 
         if(!isset($pathInfo['extension'])){
+            $copyTo = $copyTo."\\".$pathInfo['basename'];
             return self::directoryCopy($copyFrom, $copyTo, $force);
         } else {
             if (self::exists($copyFrom, $force)) {
@@ -269,6 +270,7 @@ class EzFile{
         if(isset($newPathInfo['error'])) return $newPathInfo;
 
         if(!isset($pathInfo['extension'])){
+            $moveTo = $moveTo."\\".$pathInfo['basename'];
             return self::directoryMove($moveFrom, $moveTo, $force);
         } else {
             if (self::exists($moveFrom, $force)) {
